@@ -80,7 +80,7 @@ pub fn get_info(data: &[u8]) -> Result<WavInfo, WavError> {
     }
 
     let bloc_size = byteorder::LittleEndian::read_u32(&data[16..20]);
-    let actual_bloc_size = bloc_size + 16;
+    let _actual_bloc_size = bloc_size + 16;
 
     // TODO check bloc size
 
@@ -95,15 +95,20 @@ pub fn get_info(data: &[u8]) -> Result<WavInfo, WavError> {
 
     let channels = byteorder::LittleEndian::read_u16(&data[22..24]);
     let frequency = byteorder::LittleEndian::read_u16(&data[24..28]);
-    let bytes_per_sec = byteorder::LittleEndian::read_u16(&data[28..32]);
-    let bytes_per_bloc = byteorder::LittleEndian::read_u16(&data[32..34]);
+    let _bytes_per_sec = byteorder::LittleEndian::read_u16(&data[28..32]);
+    let _bytes_per_bloc = byteorder::LittleEndian::read_u16(&data[32..34]);
     let bits_per_sample = byteorder::LittleEndian::read_u16(&data[34..36]);
 
     if &data[36..40] != b"data" {
         return Err(WavError::InvalidDataBloc);
     }
 
-    let info = WavInfo { format, channels, frequency, bits_per_sample };
+    let info = WavInfo {
+        format,
+        channels,
+        frequency,
+        bits_per_sample,
+    };
 
     Ok(info)
 }
